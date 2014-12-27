@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['starter.storage'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -33,13 +33,13 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('DataStorageCtrl', function($scope) {
+.controller('DataStorageCtrl', ['$scope', 'DataStorage', function($scope, $storage) {
   $scope.list = [
     { title: 'Item #0', id: 0 },
     { title: 'Item #1', id: 1 },
     { title: 'Item #2', id: 2 }
   ];
-})
+}])
 
 .controller('DataItemCtrl', function($scope, $stateParams) {
       console.log($stateParams);
