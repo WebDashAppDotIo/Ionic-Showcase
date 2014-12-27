@@ -1,5 +1,6 @@
 angular.module('starter.storage', ['LocalForageModule'])
 
+// see https://github.com/ccoenraets/cordova-tutorial/blob/master/starter-www/js/services/localstorage/EmployeeService.js
 .factory('DataStorage', ['$q', '$localForage', function($q, $localForage) {
 
     this.initialize = function() {
@@ -30,11 +31,42 @@ angular.module('starter.storage', ['LocalForageModule'])
         });
 
         return deferred.promise;
-    }
+    };
+
+    this.findById = function (id) {
+
+        var deferred = $q.defer(),
+            list = JSON.parse(window.localStorage.getItem("list")),
+            item = null,
+            l = list.length;
+
+        for (var i = 0; i < l; i++) {
+            if (list[i].id === id) {
+                item = list[i];
+                break;
+            }
+        }
+
+        deferred.resolve(item);
+        return deferred.promise();
+    };
+
+
+    this.findByName = function (searchKey) {
+        var deferred = $q.defer(),
+            list = JSON.parse(window.localStorage.getItem("list")),
+            results = list.filter(function (element) {
+                var fullName = element.firstName + " " + element.lastName;
+                return fullName.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
+            });
+        deferred.resolve(results);
+        return deferred.promise();
+    };
 
     return {
-        initialize: this.initialize
+        initialize: this.initialize,
+        findById: this.findById,
+        findByName: this.findByName
     }
-
 
 }]);
