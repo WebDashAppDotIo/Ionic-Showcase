@@ -34,7 +34,6 @@ angular.module('starter.controllers', ['starter.storage'])
 })
 
 .controller('DataStorageCtrl', ['$scope', 'DataStorage', function($scope, $storage) {
-  //todo: https://github.com/ccoenraets/cordova-tutorial/blob/master/starter-www/js/app.js
   $storage.findAll().then(function(data){
     $scope.list = data;
   });

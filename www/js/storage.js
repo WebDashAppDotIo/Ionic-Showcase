@@ -14,7 +14,6 @@ angular.module('starter.storage', ['LocalForageModule'])
 
     this.initialize = function() {
 
-
         var deferred = $q.defer();
         $localForage.setItem('list', JSON.stringify(
             [
