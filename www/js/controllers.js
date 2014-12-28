@@ -37,7 +37,7 @@ angular.module('starter.controllers', ['starter.storage'])
   $storage.findAll().then(function(data){
     $scope.list = data;
   });
-  $storage.findByName('Jones').then(function(data){
+  $storage.findAll().then(function(data){
     console.log(data);
   });
 }])

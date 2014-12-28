@@ -1,7 +1,7 @@
 {
   "name": "faker",
   "main": "./build/build/faker.js",
-  "version": "2.1.1",
+  "version": "2.0.0",
   "homepage": "https://github.com/Marak/faker.js",
   "authors": [
     "Marak Squires <marak.squires@gmail.com>",
@@ -21,15 +21,5 @@
     "node_modules",
     "bower_components",
     "test"
-  ],
-  "_release": "2.1.1",
-  "_resolution": {
-    "type": "version",
-    "tag": "v2.1.1",
-    "commit": "daa9f442797525c9547c329665b4e9107b41d375"
-  },
-  "_source": "git://github.com/Marak/Faker.js.git",
-  "_target": "~2.1.1",
-  "_originalSource": "Faker",
-  "_direct": true
+  ]
 }

@@ -2,13 +2,12 @@
     <ion-content>
         <ion-list>
             <ion-item class='item-avatar' ng-repeat="item in list" href="#/app/datastorage/{{item.id}}">
-                <img src="http://lorempixel.com/g/80/80/people">
+                <img ng-src="{{item.avatar}}">
                 <h2>{{item.firstName}} {{item.lastName}}</h2>
                 <p>
                     <a href="mailto:{{item.email}}">{{item.email}}</a>
                     |
-                    <a href="http://twitter.com/{{item.twitterId}}">{{item.twitterId}}</a>
-
+                    <a href="tel:+{{item.phoneNumber}}">{{item.phoneNumber}}</a>
                 </p>
             </ion-item>
         </ion-list>
