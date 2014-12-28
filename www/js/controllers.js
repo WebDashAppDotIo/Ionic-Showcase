@@ -34,14 +34,18 @@ angular.module('starter.controllers', ['starter.storage'])
 })
 
 .controller('DataStorageCtrl', ['$scope', 'DataStorage', function($scope, $storage) {
-  $scope.list = [
-    { title: 'Item #0', id: 0 },
-    { title: 'Item #1', id: 1 },
-    { title: 'Item #2', id: 2 }
-  ];
+  //todo: https://github.com/ccoenraets/cordova-tutorial/blob/master/starter-www/js/app.js
+  $storage.findAll().then(function(data){
+    $scope.list = data;
+  });
+  $storage.findByName('Jones').then(function(data){
+    console.log(data);
+  });
 }])
 
-.controller('DataItemCtrl', function($scope, $stateParams) {
-      console.log($stateParams);
-})
+.controller('DataItemCtrl', ['$scope', 'DataStorage', '$stateParams', function($scope, $storage, $stateParams) {
+  $storage.findById(parseInt($stateParams.itemId)).then(function(data){
+    $scope.item = data;
+  });
+}]);
 

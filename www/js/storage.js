@@ -1,10 +1,19 @@
 angular.module('starter.storage', ['LocalForageModule'])
+.config(['$localForageProvider', function($localForageProvider){
+    $localForageProvider.config({
+        driver      : 'localStorageWrapper', // if you want to force a driver
+        name        : 'starter', // name of the database and prefix for your data, it is "lf" by default
+        version     : 1.0, // version of the database, you shouldn't have to use this
+        storeName   : 'keyvaluepairs', // name of the table
+        description : 'some description'
+    });
+}])
 
 // see https://github.com/ccoenraets/cordova-tutorial/blob/master/starter-www/js/services/localstorage/EmployeeService.js
 .factory('DataStorage', ['$q', '$localForage', function($q, $localForage) {
 
     this.initialize = function() {
-        // Store sample data in Local Storage
+
 
         var deferred = $q.defer();
         $localForage.setItem('list', JSON.stringify(
@@ -24,7 +33,6 @@ angular.module('starter.storage', ['LocalForageModule'])
             ]
         )).then(function(value){
             deferred.resolve(JSON.parse(value));
-            console.log(JSON.parse(value));
         }, function(error) {
             deferred.reject(JSON.parse(value));
             console.error(error);
@@ -34,39 +42,95 @@ angular.module('starter.storage', ['LocalForageModule'])
     };
 
     this.findById = function (id) {
-
         var deferred = $q.defer(),
-            list = JSON.parse(window.localStorage.getItem("list")),
-            item = null,
-            l = list.length;
+            list = null,
+            self = this;
+        $localForage.getItem('list').then(function(data){
+            if('undefined'=== typeof data) {
+                // db not found: initializing then findById again
+                self.initialize().then(function(){
+                   return self.findById(id);
+                });
+                deferred.reject('cannot findById on uninitialized/missing db ');
 
-        for (var i = 0; i < l; i++) {
-            if (list[i].id === id) {
-                item = list[i];
-                break;
+                return deferred.promise;
             }
-        }
+            list = data;
+        }, function(error) {
+            console.log('db found, but list not found', error);
+        }).then(function(){
+            list = JSON.parse(list);
+            var l = list.length;
+            for (var i = 0; i < l; i++) {
+                if (list[i].id === id) {
+                    deferred.resolve(list[i]);
+                    break;
+                }
+            }
+        });
 
-        deferred.resolve(item);
-        return deferred.promise();
+        return deferred.promise;
     };
 
 
     this.findByName = function (searchKey) {
         var deferred = $q.defer(),
-            list = JSON.parse(window.localStorage.getItem("list")),
-            results = list.filter(function (element) {
+            list = null,
+            self = this;
+
+        $localForage.getItem('list').then(function (data) {
+            if ('undefined' === typeof data) {
+                // db not found: initializing then findAll again
+                self.initialize().then(function () {
+                    return self.findByName(searchKey);
+                });
+                deferred.reject('cannot findByName on uninitialized/missing db ');
+
+                return deferred.promise;
+            }
+            list = data;
+        }, function (error) {
+            console.log('db found, but list not found', error);
+        }).then(function () {
+            list = JSON.parse(list);
+            var results = list.filter(function (element) {
                 var fullName = element.firstName + " " + element.lastName;
                 return fullName.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
             });
-        deferred.resolve(results);
-        return deferred.promise();
+            deferred.resolve(results);
+        });
+
+        return deferred.promise;
     };
 
+    this.findAll = function () {
+        var deferred = $q.defer(),
+            list = null;
+        var self = this;
+        $localForage.getItem('list').then(function (data) {
+            if ('undefined' === typeof data) {
+                // db not found: initializing then findAll again
+                self.initialize().then(function () {
+                    return self.findAll();
+                });
+                deferred.reject('cannot findAll on uninitialized/missing db ');
+
+                return deferred.promise;
+            }
+            list = data;
+        }, function (error) {
+            console.log('db found, but list not found', error);
+        }).then(function () {
+            deferred.resolve(JSON.parse(list));
+        });
+
+        return deferred.promise;
+    }
     return {
         initialize: this.initialize,
         findById: this.findById,
-        findByName: this.findByName
+        findByName: this.findByName,
+        findAll: this.findAll
     }
 
 }]);

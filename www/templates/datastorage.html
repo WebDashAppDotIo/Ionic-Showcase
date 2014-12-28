@@ -1,8 +1,15 @@
 <ion-view view-title="Data Storage">
     <ion-content>
         <ion-list>
-            <ion-item ng-repeat="item in list" href="#/app/datastorage/{{item.id}}">
-                {{item.title}}
+            <ion-item class='item-avatar' ng-repeat="item in list" href="#/app/datastorage/{{item.id}}">
+                <img ng-src="http://lorempixel.com/g/80/80/people">
+                <h2>{{item.firstName}} {{item.lastName}}</h2>
+                <p>
+                    <a href="mailto:{{item.email}}">{{item.email}}</a>
+                    |
+                    <a href="http://twitter.com/{{item.twitterId}}">{{item.twitterId}}</a>
+
+                </p>
             </ion-item>
         </ion-list>
     </ion-content>
