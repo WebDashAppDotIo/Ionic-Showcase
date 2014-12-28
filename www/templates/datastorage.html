@@ -1,7 +1,14 @@
 <ion-view view-title="Une liste">
     <ion-content>
+        <div class="item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="search" ng-model="searchText" autofocus placeholder="Trouver..." />
+            <button class="button button-clear" ng-show="searchText.length" ng-click="searchText=null">
+                Annuler
+            </button>
+        </div>
         <ion-list>
-            <ion-item class='item-avatar' ng-repeat="item in list" href="#/app/datastorage/{{item.id}}">
+            <ion-item class='item-avatar' ng-repeat="item in list | filter:searchText" href="#/app/datastorage/{{item.id}}">
                 <img ng-src="{{item.avatar}}">
                 <h2>{{item.firstName}} {{item.lastName}}</h2>
                 <p>
