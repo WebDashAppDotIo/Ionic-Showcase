@@ -5,8 +5,8 @@
             <div class="item item-avatar">
                 <img ng-src="{{item.avatar}}">
                 <h2>{{item.firstName}} {{item.lastName}}
-                    | <a ng-bind-html="{{item.url | hrefToJS}}">website</a>
                 </h2>
+                <p ng-bind-html="item.url | linky | hrefToJS"></p>
                 <p>
                     <a href="mailto:{{item.email}}">{{item.email}}</a>
                     |
